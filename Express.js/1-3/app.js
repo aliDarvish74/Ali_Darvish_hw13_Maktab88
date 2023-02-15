@@ -14,10 +14,14 @@ app.get("/:users", (req, res) => {
       res.sendFile(`${__dirname}/user-data.json`);
       break;
     case "admins":
-      let data = readFileSync("./user-data.json", "utf-8");
-      data = JSON.parse(data);
-      data = data.filter((user) => user.role === "admin");
-      res.json(data);
+      try {
+        let data = readFileSync("./user-data.json", "utf-8");
+        data = JSON.parse(data).filter((user) => user.role === "admin");
+        res.json(data);
+      } catch (error) {
+        console.log(error?.message);
+      }
+
       break;
     default:
       res.send(`Not Found`);
